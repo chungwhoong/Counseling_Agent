@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NvidiaTextClient } from "@/infrastructure/ai/NvidiaTextClient";
-
-export const maxDuration = 60;
+import { OllamaTextClient } from "@/infrastructure/ai/OllamaTextClient";
 import { GenerateCounselingMemo } from "@/application/use-cases/GenerateCounselingMemo";
 import { logger } from "@/infrastructure/logger";
 import { env } from "@/config/env";
 import type { CounselingMemoRequest } from "@/domain/entities/CounselingMemo";
+
+export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +16,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "학생명이 필요합니다." }, { status: 400 });
     }
 
-    const aiClient = new NvidiaTextClient(env.nvidiaApiKey);
+    const aiClient = env.useOllama
+      ? new OllamaTextClient(env.ollamaBaseUrl, env.ollamaTextModel)
+      : new NvidiaTextClient(env.nvidiaApiKey);
     const useCase = new GenerateCounselingMemo(aiClient);
     const memo = await useCase.execute(body);
 
