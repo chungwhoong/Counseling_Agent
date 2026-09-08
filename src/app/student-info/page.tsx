@@ -73,8 +73,12 @@ export default function StudentInfoPage() {
         }),
       });
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error ?? "서버 오류가 발생했습니다.");
+        let errMsg = `서버 오류 (${response.status})`;
+        try {
+          const data = await response.json();
+          errMsg = data.error ?? errMsg;
+        } catch {}
+        throw new Error(errMsg);
       }
       const data: CounselingMemo = await response.json();
       setResult(data);

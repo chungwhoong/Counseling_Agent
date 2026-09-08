@@ -40,7 +40,7 @@ export default function JournalAnalysisPage() {
       const formData = new FormData();
       formData.append("image", file);
       const res = await fetch("/api/journal-analysis", { method: "POST", body: formData });
-      if (!res.ok) { const d = await res.json(); throw new Error(d.error ?? "분석 실패"); }
+      if (!res.ok) { let m = `서버 오류 (${res.status})`; try { const d = await res.json(); m = d.error ?? m; } catch {} throw new Error(m); }
       const data: JournalAnalysis = await res.json();
       setResult(data);
       setTimeout(() => document.getElementById("result-section")?.scrollIntoView({ behavior: "smooth" }), 100);
