@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NvidiaVisionClient } from "@/infrastructure/ai/NvidiaVisionClient";
+
+export const maxDuration = 60;
 import { AnalyzeJournalImage } from "@/application/use-cases/AnalyzeJournalImage";
 import { logger } from "@/infrastructure/logger";
 import { env } from "@/config/env";

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NvidiaTextClient } from "@/infrastructure/ai/NvidiaTextClient";
+
+export const maxDuration = 60;
 import { GenerateCounselingMemo } from "@/application/use-cases/GenerateCounselingMemo";
 import { logger } from "@/infrastructure/logger";
 import { env } from "@/config/env";
